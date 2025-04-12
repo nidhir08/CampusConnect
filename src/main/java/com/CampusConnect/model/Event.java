@@ -8,22 +8,22 @@ public class Event {
     private String description;
     private Date eventDate;
     private String location;
-    private Timestamp createdAt;
+    private String societyName; // fetched from JOIN
 
-    // Constructors
+    // ✅ Default constructor
     public Event() {}
 
-    public Event(int eventId, int societyId, String title, String description, Date eventDate, String location, Timestamp createdAt) {
+    // ✅ Parameterized constructor for easier object creation
+    public Event(int eventId, int societyId, String title, String description, String location, Date eventDate) {
         this.eventId = eventId;
         this.societyId = societyId;
         this.title = title;
         this.description = description;
-        this.eventDate = eventDate;
         this.location = location;
-        this.createdAt = createdAt;
+        this.eventDate = eventDate;
     }
 
-    // Getters and Setters
+    // ✅ Getters and Setters
     public int getEventId() {
         return eventId;
     }
@@ -72,11 +72,11 @@ public class Event {
         this.location = location;
     }
 
-    public Timestamp getCreatedAt() {
-        return createdAt;
+    public String getSocietyName() {
+        return societyName;
     }
 
-    public void setCreatedAt(Timestamp createdAt) {
-        this.createdAt = createdAt;
+    public void setSocietyName(String societyName) {
+        this.societyName = societyName;
     }
 }

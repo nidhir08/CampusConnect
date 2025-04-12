@@ -1,6 +1,7 @@
 package com.CampusConnect.controller;
-import com.CampusConnect.dao.UserDAO;
-import com.CampusConnect.model.User;
+import com.CampusConnect.util.DBConnection;
+
+import javax.servlet.RequestDispatcher;
 import javax.servlet.ServletException;
 import javax.servlet.annotation.WebServlet;
 import javax.servlet.http.HttpServlet;
@@ -8,55 +9,48 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
 import java.io.IOException;
+import java.sql.Connection;
+import java.sql.PreparedStatement;
+import java.sql.ResultSet;
 
 @WebServlet("/login")
+
 public class LoginServlet extends HttpServlet {
-    private static final long serialVersionUID = 1L;
-    private UserDAO userDAO;
+    protected void doPost(HttpServletRequest request, HttpServletResponse response)
+            throws ServletException, IOException {
 
-    @Override
-    public void init() {
-        userDAO = new UserDAO();
-    }
-
-    @Override
-    protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
-        // Forward to login page
-        request.getRequestDispatcher("/login.jsp").forward(request, response);
-    }
-
-    @Override
-    protected void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
-        String username = request.getParameter("username");
+        String usernameOrEmail = request.getParameter("username");
         String password = request.getParameter("password");
-        String errorMessage = null;
 
-        // Validate input
-        if (username == null || username.trim().isEmpty() || password == null || password.trim().isEmpty()) {
-            errorMessage = "Username and password are required";
-            request.setAttribute("errorMessage", errorMessage);
-            request.getRequestDispatcher("/login.jsp").forward(request, response);
-            return;
-        }
+        try {
+            Connection conn = DBConnection.getConnection();
+            String query = "SELECT * FROM users WHERE (username = ? OR email = ?) AND password = ?";
+            PreparedStatement ps = conn.prepareStatement(query);
+            ps.setString(1, usernameOrEmail);
+            ps.setString(2, usernameOrEmail);
+            ps.setString(3, password);
 
-        // Authenticate user
-        User user = userDAO.getUserByUsername(username);
+            ResultSet rs = ps.executeQuery();
 
-        if (user != null && password.equals(user.getPassword())) { // In production, use proper password hashing
-            // Create session
-            HttpSession session = request.getSession();
-            session.setAttribute("user", user);
+            if (rs.next()) {
+                // Login successful, store session attributes if needed
+                HttpSession session = request.getSession();
+                session.setAttribute("username", rs.getString("username"));
+                session.setAttribute("fullName", rs.getString("full_name"));
 
-            // Redirect based on role
-            if ("ADMIN".equals(user.getRole())) {
-                response.sendRedirect(request.getContextPath() + "/admin/dashboard");
+                RequestDispatcher rd = request.getRequestDispatcher("/home");
+                rd.forward(request, response);
             } else {
-                response.sendRedirect(request.getContextPath() + "/home");
+                request.setAttribute("errorMessage", "Invalid username/email or password.");
+                RequestDispatcher rd = request.getRequestDispatcher("error.jsp");
+                rd.forward(request, response);
             }
-        } else {
-            errorMessage = "Invalid username or password";
-            request.setAttribute("errorMessage", errorMessage);
-            request.getRequestDispatcher("/login.jsp").forward(request, response);
+
+        } catch (Exception e) {
+            e.printStackTrace();
+            request.setAttribute("errorMessage", "Something went wrong.");
+            RequestDispatcher rd = request.getRequestDispatcher("error.jsp");
+            rd.forward(request, response);
         }
     }
 }

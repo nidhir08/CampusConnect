@@ -7,151 +7,160 @@ import java.util.List;
 
 public class EventDAO {
 
+    public List<Event> getAllEventsWithSocietyNames() {
+        List<Event> events = new ArrayList<>();
+
+        String sql = "SELECT e.*, s.name AS society_name " +
+                "FROM events e " +
+                "JOIN societies s ON e.society_id = s.so_id " +
+                "ORDER BY e.event_date DESC";
+
+        try (Connection conn = DBConnection.getConnection();
+             PreparedStatement stmt = conn.prepareStatement(sql);
+             ResultSet rs = stmt.executeQuery()) {
+
+            while (rs.next()) {
+                Event event = new Event();
+                event.setEventId(rs.getInt("event_id"));
+                event.setSocietyId(rs.getInt("society_id"));
+                event.setTitle(rs.getString("title"));
+                event.setDescription(rs.getString("description"));
+                event.setEventDate(rs.getTimestamp("event_date"));
+                event.setLocation(rs.getString("location"));
+                event.setSocietyName(rs.getString("society_name"));
+                events.add(event);
+            }
+
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+
+        return events;
+    }
+
+    public List<Event> getEventsBySocietyId(int soId) {
+        List<Event> events = new ArrayList<>();
+
+        String sql = "SELECT * FROM events WHERE society_id = ? ORDER BY event_date ASC";
+
+        try (Connection conn = DBConnection.getConnection();
+             PreparedStatement stmt = conn.prepareStatement(sql)) {
+
+            stmt.setInt(1, soId);
+            ResultSet rs = stmt.executeQuery();
+
+            while (rs.next()) {
+                Event event = new Event();
+                event.setEventId(rs.getInt("event_id"));
+                event.setSocietyId(rs.getInt("society_id"));
+                event.setTitle(rs.getString("title"));
+                event.setDescription(rs.getString("description"));
+                event.setEventDate(rs.getTimestamp("event_date"));
+                event.setLocation(rs.getString("location"));
+
+                events.add(event);
+            }
+
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+
+        return events;
+    }
+
     public List<Event> getAllEvents() {
-        Connection conn = null;
-        Statement stmt = null;
-        ResultSet rs = null;
         List<Event> events = new ArrayList<>();
-
-        try {
-            conn = DBConnection.getConnection();
-            stmt = conn.createStatement();
-            String sql = "SELECT * FROM events ORDER BY event_date DESC";
-            rs = stmt.executeQuery(sql);
+        try (Connection conn = DBConnection.getConnection();
+             PreparedStatement stmt = conn.prepareStatement("SELECT * FROM events");
+             ResultSet rs = stmt.executeQuery()) {
 
             while (rs.next()) {
+                int eventId = rs.getInt("event_id");
+                int societyId = rs.getInt("society_id");
+                String title = rs.getString("title");
+                String description = rs.getString("description");
+                String location = rs.getString("location");
+                Timestamp eventDate = rs.getTimestamp("event_date");
+
                 Event event = new Event();
-                event.setEventId(rs.getInt("event_id"));
-                event.setSocietyId(rs.getInt("society_id"));
-                event.setTitle(rs.getString("title"));
-                event.setDescription(rs.getString("description"));
-                event.setEventDate(rs.getTimestamp("event_date"));
-                event.setLocation(rs.getString("location"));
-                event.setCreatedAt(rs.getTimestamp("created_at"));
+                event.setEventId(eventId);
+                event.setSocietyId(societyId);
+                event.setTitle(title);
+                event.setDescription(description);
+                event.setLocation(location);
+                event.setEventDate(eventDate);
+
                 events.add(event);
             }
+
         } catch (SQLException e) {
             e.printStackTrace();
-        } finally {
-            try {
-                if (rs != null) rs.close();
-                if (stmt != null) stmt.close();
-                if (conn != null) DBConnection.closeConnection(conn);
-            } catch (SQLException e) {
-                e.printStackTrace();
-            }
         }
-
         return events;
     }
 
-    public List<Event> getEventsBySociety(int societyId) {
-        Connection conn = null;
-        PreparedStatement stmt = null;
-        ResultSet rs = null;
-        List<Event> events = new ArrayList<>();
+    public static boolean addEvent(Event event) {
+        String query = "INSERT INTO events (title, description, event_date, society_id) VALUES (?, ?, ?, ?)";
+        try (Connection conn = DBConnection.getConnection();
+             PreparedStatement ps = conn.prepareStatement(query)) {
 
-        try {
-            conn = DBConnection.getConnection();
-            String sql = "SELECT * FROM events WHERE society_id = ? ORDER BY event_date DESC";
-            stmt = conn.prepareStatement(sql);
-            stmt.setInt(1, societyId);
-            rs = stmt.executeQuery();
+            ps.setString(1, event.getTitle());
+            ps.setString(2, event.getDescription());
+            ps.setDate(3, new java.sql.Date(event.getEventDate().getTime()));
+            ps.setInt(4, event.getSocietyId());
 
-            while (rs.next()) {
-                Event event = new Event();
-                event.setEventId(rs.getInt("event_id"));
-                event.setSocietyId(rs.getInt("society_id"));
-                event.setTitle(rs.getString("title"));
-                event.setDescription(rs.getString("description"));
-                event.setEventDate(rs.getTimestamp("event_date"));
-                event.setLocation(rs.getString("location"));
-                event.setCreatedAt(rs.getTimestamp("created_at"));
-                events.add(event);
-            }
-        } catch (SQLException e) {
+            int rows = ps.executeUpdate();
+            return rows > 0;
+
+        } catch (Exception e) {
             e.printStackTrace();
-        } finally {
-            try {
-                if (rs != null) rs.close();
-                if (stmt != null) stmt.close();
-                if (conn != null) DBConnection.closeConnection(conn);
-            } catch (SQLException e) {
-                e.printStackTrace();
-            }
         }
-
-        return events;
+        return false;
     }
 
-    public boolean addEvent(Event event) {
-        Connection conn = null;
-        PreparedStatement stmt = null;
-        boolean success = false;
 
-        try {
-            conn = DBConnection.getConnection();
-            String sql = "INSERT INTO events (society_id, title, description, event_date, location) VALUES (?, ?, ?, ?, ?)";
-            stmt = conn.prepareStatement(sql);
+    public void updateEvent(Event event) {
+        String sql = "UPDATE events SET society_id = ?, title = ?, description = ?, location = ?, event_date = ? WHERE event_id = ?";
+        try (Connection conn = DBConnection.getConnection();
+             PreparedStatement stmt = conn.prepareStatement(sql)) {
             stmt.setInt(1, event.getSocietyId());
             stmt.setString(2, event.getTitle());
             stmt.setString(3, event.getDescription());
-            stmt.setTimestamp(4, new Timestamp(event.getEventDate().getTime()));
-            stmt.setString(5, event.getLocation());
+            stmt.setString(4, event.getLocation());
+            stmt.setTimestamp(5, new Timestamp(event.getEventDate().getTime()));
+            stmt.setInt(6, event.getEventId());
+            stmt.executeUpdate();
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+    }
 
-            int rowsAffected = stmt.executeUpdate();
-            success = rowsAffected > 0;
+    public void deleteEvent(int eventId) {
+        String sql = "DELETE FROM events WHERE event_id = ?";
+        try (Connection conn = DBConnection.getConnection();
+             PreparedStatement stmt = conn.prepareStatement(sql)) {
+            stmt.setInt(1, eventId);
+            stmt.executeUpdate();
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+    }
 
-            // If event is added successfully, create notifications for all users
-            if (success) {
-                createNotificationsForEvent(conn, stmt.getGeneratedKeys().getInt(1));
-            }
+    public static boolean insertEvent(Event event) {
+        boolean inserted = false;
+        try (Connection conn = DBConnection.getConnection()) {
+            String sql = "INSERT INTO events (title, description, event_date, society_id) VALUES (?, ?, ?, ?)";
+            PreparedStatement ps = conn.prepareStatement(sql);
+            ps.setString(1, event.getTitle());
+            ps.setString(2, event.getDescription());
+            ps.setDate(3, new java.sql.Date(event.getEventDate().getTime()));
+            ps.setInt(4, event.getSocietyId());
+
+            int rows = ps.executeUpdate();
+            inserted = rows > 0;
         } catch (SQLException e) {
             e.printStackTrace();
-        } finally {
-            try {
-                if (stmt != null) stmt.close();
-                if (conn != null) DBConnection.closeConnection(conn);
-            } catch (SQLException e) {
-                e.printStackTrace();
-            }
         }
-
-        return success;
-    }
-
-    private void createNotificationsForEvent(Connection conn, int eventId) throws SQLException {
-        PreparedStatement stmt = null;
-        ResultSet rs = null;
-
-        try {
-            // Get all users
-            String sql = "SELECT user_id FROM users";
-            stmt = conn.prepareStatement(sql);
-            rs = stmt.executeQuery();
-
-            // Create a notification for each user
-            while (rs.next()) {
-                int userId = rs.getInt("user_id");
-                createNotification(conn, userId, eventId);
-            }
-        } finally {
-            if (rs != null) rs.close();
-            if (stmt != null) stmt.close();
-        }
-    }
-
-    private void createNotification(Connection conn, int userId, int eventId) throws SQLException {
-        PreparedStatement stmt = null;
-
-        try {
-            String sql = "INSERT INTO notifications (user_id, event_id) VALUES (?, ?)";
-            stmt = conn.prepareStatement(sql);
-            stmt.setInt(1, userId);
-            stmt.setInt(2, eventId);
-            stmt.executeUpdate();
-        } finally {
-            if (stmt != null) stmt.close();
-        }
+        return inserted;
     }
 }

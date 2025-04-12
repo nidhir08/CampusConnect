@@ -11,77 +11,33 @@ import java.io.IOException;
 
 @WebServlet("/register")
 public class RegisterServlet extends HttpServlet {
-    private static final long serialVersionUID = 1L;
-    private UserDAO userDAO;
-
-    @Override
-    public void init() {
-        userDAO = new UserDAO();
-    }
-
-    @Override
-    protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
-        // Forward to registration page
-        request.getRequestDispatcher("/register.jsp").forward(request, response);
-    }
-
-    @Override
     protected void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
+        String fullName = request.getParameter("fullName");
+        String email = request.getParameter("email");
         String username = request.getParameter("username");
         String password = request.getParameter("password");
         String confirmPassword = request.getParameter("confirmPassword");
-        String email = request.getParameter("email");
-        String fullName = request.getParameter("fullName");
-        String errorMessage = null;
 
-        // Validate input
-        if (username == null || username.trim().isEmpty() ||
-                password == null || password.trim().isEmpty() ||
-                confirmPassword == null || confirmPassword.trim().isEmpty() ||
-                email == null || email.trim().isEmpty() ||
-                fullName == null || fullName.trim().isEmpty()) {
-
-            errorMessage = "All fields are required";
-            request.setAttribute("errorMessage", errorMessage);
-            request.getRequestDispatcher("/register.jsp").forward(request, response);
-            return;
-        }
-
-        // Check if passwords match
         if (!password.equals(confirmPassword)) {
-            errorMessage = "Passwords do not match";
-            request.setAttribute("errorMessage", errorMessage);
-            request.getRequestDispatcher("/register.jsp").forward(request, response);
+            request.setAttribute("errorMessage", "Passwords do not match.");
+            request.getRequestDispatcher("register.jsp").forward(request, response);
             return;
         }
 
-        // Check if username already exists
-        User existingUser = userDAO.getUserByUsername(username);
-        if (existingUser != null) {
-            errorMessage = "Username already exists";
-            request.setAttribute("errorMessage", errorMessage);
-            request.getRequestDispatcher("/register.jsp").forward(request, response);
-            return;
-        }
+        User user = new User();
+        user.setFullName(fullName);
+        user.setEmail(email);
+        user.setUsername(username);
+        user.setPassword(password); // 🔐 Remember to hash in real-world apps!
 
-        // Create new user
-        User newUser = new User();
-        newUser.setUsername(username);
-        newUser.setPassword(password); // In production, use proper password hashing
-        newUser.setEmail(email);
-        newUser.setFullName(fullName);
-        newUser.setRole("STUDENT"); // Default role
-
-        boolean success = userDAO.addUser(newUser);
+        UserDAO dao = new UserDAO();
+        boolean success = dao.registerUser(user);
 
         if (success) {
-            // Redirect to login page with success message
-            request.setAttribute("successMessage", "Registration successful! Please login.");
-            request.getRequestDispatcher("/login.jsp").forward(request, response);
+            response.sendRedirect("login.jsp");
         } else {
-            errorMessage = "Registration failed. Please try again.";
-            request.setAttribute("errorMessage", errorMessage);
-            request.getRequestDispatcher("/register.jsp").forward(request, response);
+            request.setAttribute("errorMessage", "Registration failed. Email or username may already exist.");
+            request.getRequestDispatcher("register.jsp").forward(request, response);
         }
     }
 }
