@@ -33,12 +33,14 @@ ul {
 
 /* Header Styles */
 .header {
+    width: 100%;
     display: flex;
     justify-content: space-between;
     align-items: center;
-    padding: 20px 0;
     border-bottom: 1px solid #e1e1e1;
     background-color: #fff;
+    padding: 25px;
+
 }
 
 .logo h1 {
@@ -48,6 +50,7 @@ ul {
 
 .logo a {
     color: #333;
+
 }
 
 .main-nav ul {
@@ -427,6 +430,7 @@ ul {
 
 /* Footer Styles */
 .footer {
+    width: 100%;
     background-color: #333;
     color: #fff;
     padding: 40px 0 20px;
@@ -439,6 +443,10 @@ ul {
     margin-bottom: 30px;
 }
 
+
+.footer-section {
+    padding: 20px;
+}
 .footer-section h3 {
     font-size: 18px;
     margin-bottom: 15px;

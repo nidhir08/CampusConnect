@@ -103,13 +103,14 @@
   </style>
 </head>
 <body>
+<jsp:include page="include/header.jsp" />
 <div class="container">
-  <jsp:include page="include/header.jsp" />
+
 
   <main class="main-content">
     <section class="hero-section">
       <div class="hero-content">
-        <h2>Welcome to College Societies</h2>
+        <h2>Welcome to Campus Connect</h2>
         <p>Your one-stop platform for all college society information and events.</p>
 
         <%
@@ -117,8 +118,8 @@
           if (user == null) {
         %>
         <div class="hero-buttons">
-          <a href="login" class="btn btn-primary">Login</a>
-          <a href="register" class="btn btn-secondary">Register</a>
+<%--          <a href="login" class="btn btn-primary">Login</a>--%>
+<%--          <a href="register" class="btn btn-secondary">Register</a>--%>
         </div>
         <%
           }
@@ -129,7 +130,9 @@
     <!-- Login Popup -->
     <div id="loginPopup" class="popup-overlay">
       <div class="popup-container">
+        <% if (session.getAttribute("user") != null) { %>
         <span class="popup-close" onclick="closePopup()">&times;</span>
+        <% } %>
         <h2 class="popup-title">Welcome to College Societies</h2>
         <p>Please login or register to continue exploring our platform.</p>
 
@@ -178,7 +181,7 @@
       </div>
 
       <div class="view-all">
-        <a href="events" class="btn btn-secondary">View All Events</a>
+        <a href="events" class="btn btn-primary">View All Events</a>
       </div>
     </section>
 
@@ -216,14 +219,14 @@
       </div>
 
       <div class="view-all">
-        <a href="societies" class="btn btn-secondary">View All Societies</a>
+        <a href="societies" class="btn btn-primary">View All Societies</a>
       </div>
     </section>
   </main>
 
-  <jsp:include page="include/footer.jsp" />
 </div>
 
+<jsp:include page="include/footer.jsp" />
 
 
 <script>
