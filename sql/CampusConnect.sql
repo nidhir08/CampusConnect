@@ -46,3 +46,13 @@ VALUES
     ('Programming Club', 'A club for programming enthusiasts'),
     ('Drama Society', 'For students interested in theater and acting'),
     ('Debate Club', 'Improve your public speaking and debating skills');
+
+INSERT INTO events (society_id, title, description, event_date, location)
+VALUES (
+           1,
+           'Hackathon 2025',
+           'A 24-hour coding challenge to solve real-world problems.',
+           '2025-04-20 10:00:00',
+           'Auditorium Hall'
+       );
+COMMIT;

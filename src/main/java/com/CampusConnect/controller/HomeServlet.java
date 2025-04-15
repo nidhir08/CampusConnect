@@ -11,8 +11,8 @@ import javax.servlet.http.*;
 import java.io.IOException;
 import java.util.List;
 
-@WebServlet("/home" )
 
+@WebServlet("/")
 public class HomeServlet extends HttpServlet {
 private EventDAO eventDAO;
 private SocietyDAO societyDAO;
@@ -39,7 +39,7 @@ protected void doGet(HttpServletRequest request, HttpServletResponse response)
     request.setAttribute("upcomingEvents", upcomingEvents);
     request.setAttribute("societies", societies);
 
-    request.getRequestDispatcher("dashboard.jsp").forward(request, response);
+    request.getRequestDispatcher("home.jsp").forward(request, response);
 }
 
 }

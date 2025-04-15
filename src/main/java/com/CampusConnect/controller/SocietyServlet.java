@@ -12,8 +12,7 @@ import javax.servlet.http.HttpServletResponse;
 import java.io.IOException;
 import java.util.List;
 
-@WebServlet("/societies")
-
+//@WebServlet("/societies")
 public class SocietyServlet extends HttpServlet {
     protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
         SocietyDAO dao = new SocietyDAO();
@@ -22,7 +21,7 @@ public class SocietyServlet extends HttpServlet {
         RequestDispatcher dispatcher = request.getRequestDispatcher("societies.jsp");
         dispatcher.forward(request, response);
 
-        //  System.out.println("Fetched societies: " + societies.size());
+        System.out.println("Fetched societies: " + societies.size());
 
     }
 }

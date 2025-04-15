@@ -10,34 +10,6 @@ import java.sql.ResultSet;
 import java.util.ArrayList;
 import java.util.List;
 
-//public class SocietyDAO {
-//    private int soId;
-//    private String name;
-//    private String description;
-//    private String logoUrl;
-//
-//    // Getters and setters
-//    public int getSoId() { return soId; }
-//    public void setSoId(int soId) { this.soId = soId; }
-//
-//    public String getName() { return name; }
-//    public void setName(String name) { this.name = name; }
-//
-//    public String getDescription() { return description; }
-//    public void setDescription(String description) { this.description = description; }
-//
-//    public String getLogoUrl() { return logoUrl; }
-//    public void setLogoUrl(String logoUrl) { this.logoUrl = logoUrl; }
-//
-//    public Society getSocietyById(int soId) {
-//        return null;
-//    }
-//
-////    public List<Society> getAllSocieties() {
-////    }
-//}
-
-import java.util.List;
 
 public class SocietyDAO {
 
@@ -52,7 +24,7 @@ public class SocietyDAO {
 
             while (rs.next()) {
                 Society society = new Society();
-                society.setSoId(rs.getInt("id")); // use actual DB column name
+                society.setSoId(rs.getInt("so_id")); // use actual DB column name
                 society.setName(rs.getString("name"));
                 society.setDescription(rs.getString("description"));
                 society.setLogoUrl(rs.getString("logo_url"));

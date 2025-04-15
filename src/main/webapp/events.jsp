@@ -10,11 +10,11 @@
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>Events - College Societies</title>
-  <link rel="stylesheet" href="css/styles.css">
+  <link rel="stylesheet" href="/CampusConnect/css/styles.css">
 </head>
 <body>
 <div class="container">
-  <jsp:include page="header.jsp" />
+  <jsp:include page="include/header.jsp" />
 
   <main class="main-content">
     <section class="page-header">
@@ -79,7 +79,7 @@
     </section>
   </main>
 
-  <jsp:include page="footer.jsp" />
+  <jsp:include page="include/footer.jsp" />
 </div>
 </body>
 </html>

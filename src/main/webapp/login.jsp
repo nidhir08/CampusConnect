@@ -9,7 +9,7 @@
 </head>
 <body>
 <div class="container">
-    <jsp:include page="header.jsp" />
+    <jsp:include page="include/header.jsp" />
 
     <main class="main-content">
         <div class="auth-form">
@@ -49,7 +49,7 @@
         </div>
     </main>
 
-    <jsp:include page="footer.jsp" />
+    <jsp:include page="include/footer.jsp" />
 </div>
 </body>
 </html>

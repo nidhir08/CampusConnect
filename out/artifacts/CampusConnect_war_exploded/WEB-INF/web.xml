@@ -10,6 +10,56 @@
     <welcome-file>home</welcome-file>
   </welcome-file-list>
 
+  <servlet>
+    <servlet-name>LoginServlet</servlet-name>
+    <servlet-class>com.CampusConnect.controller.LoginServlet</servlet-class>
+  </servlet>
+
+  <servlet-mapping>
+    <servlet-name>LoginServlet</servlet-name>
+    <url-pattern>/LoginServlet</url-pattern>
+  </servlet-mapping>
+
+  <servlet>
+    <servlet-name>SocietyServlet</servlet-name>
+    <servlet-class>com.CampusConnect.controller.SocietyServlet</servlet-class>
+  </servlet>
+
+  <servlet-mapping>
+    <servlet-name>SocietyServlet</servlet-name>
+    <url-pattern>/society</url-pattern>
+  </servlet-mapping>
+
+  <servlet>
+    <servlet-name>RegisterServlet</servlet-name>
+    <servlet-class>com.CampusConnect.controller.RegisterServlet</servlet-class>
+  </servlet>
+
+  <servlet-mapping>
+    <servlet-name>RegisterServlet</servlet-name>
+    <url-pattern>/register</url-pattern>
+  </servlet-mapping>
+
+  <servlet>
+    <servlet-name>EventServlet</servlet-name>
+    <servlet-class>com.CampusConnect.controller.EventServlet</servlet-class>
+  </servlet>
+
+  <servlet-mapping>
+    <servlet-name>EventServlet</servlet-name>
+    <url-pattern>/events</url-pattern>
+  </servlet-mapping>
+
+  <servlet>
+    <servlet-name>SocietyDetailsServlet</servlet-name>
+    <servlet-class>com.CampusConnect.controller.SocietyDetailsServlet</servlet-class>
+  </servlet>
+
+  <servlet-mapping>
+    <servlet-name>SocietyDetailsServlet</servlet-name>
+    <url-pattern>/SocietyDetailsServlet</url-pattern>
+  </servlet-mapping>
+
   <!-- Home Servlet Mapping -->
   <servlet>
     <servlet-name>HomeServlet</servlet-name>
@@ -17,8 +67,9 @@
   </servlet>
   <servlet-mapping>
     <servlet-name>HomeServlet</servlet-name>
-    <url-pattern>/</url-pattern>
+    <url-pattern>/home</url-pattern>
   </servlet-mapping>
+
   <servlet-mapping>
     <servlet-name>default</servlet-name>
     <url-pattern>*.css</url-pattern>
@@ -31,21 +82,21 @@
   </session-config>
 
   <!-- Security Constraints -->
-  <security-constraint>
-    <web-resource-collection>
-      <web-resource-name>Admin Area</web-resource-name>
-      <url-pattern>/admin/*</url-pattern>
-    </web-resource-collection>
-    <auth-constraint>
-      <role-name>ADMIN</role-name>
-    </auth-constraint>
-  </security-constraint>
+<!--  <security-constraint>-->
+<!--    <web-resource-collection>-->
+<!--      <web-resource-name>Admin Area</web-resource-name>-->
+<!--      <url-pattern>/admin/*</url-pattern>-->
+<!--    </web-resource-collection>-->
+<!--    <auth-constraint>-->
+<!--      <role-name>ADMIN</role-name>-->
+<!--    </auth-constraint>-->
+<!--  </security-constraint>-->
 
   <!-- Security Roles -->
-  <security-role>
-    <role-name>ADMIN</role-name>
-  </security-role>
-  <security-role>
-    <role-name>STUDENT</role-name>
-  </security-role>
+<!--  <security-role>-->
+<!--    <role-name>ADMIN</role-name>-->
+<!--  </security-role>-->
+<!--  <security-role>-->
+<!--    <role-name>STUDENT</role-name>-->
+<!--  </security-role>-->
 </web-app>
