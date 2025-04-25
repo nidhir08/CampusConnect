@@ -6,7 +6,8 @@ CREATE TABLE users (
                        email VARCHAR(100) NOT NULL UNIQUE,
                        username VARCHAR(50) NOT NULL UNIQUE,
                        password VARCHAR(255) NOT NULL,
-                       created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP
+                       created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
+                       role VARCHAR(20) NOT NULL
 );
 
 CREATE TABLE societies (
@@ -38,8 +39,10 @@ CREATE TABLE society_members (
                                  FOREIGN KEY (user_id) REFERENCES users(user_id)
 );
 
-INSERT INTO users (username, password, email, full_name)
-VALUES ('admin', 'admin123', 'admin@college.edu', 'Admin User');
+INSERT INTO users (username, email, password, full_name, role)
+VALUES
+    ('admin', 'admin@example.com', 'admin123', 'Admin User', 'admin'),
+    ('student', 'student@example.com', 'student123', 'Student User', 'student');
 
 INSERT INTO societies (name, description)
 VALUES

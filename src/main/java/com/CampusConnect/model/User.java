@@ -8,7 +8,16 @@ public class User {
     private String username;
     private String password;
     private String role;
+    private int userId;
     // Getters and setters
+    public int getUserId() {
+        return userId;
+    }
+
+    public void setUserId(int userId) {
+        this.userId = userId;
+    }
+
     public String getFullName() { return fullName; }
     public void setFullName(String fullName) { this.fullName = fullName; }
 
@@ -23,4 +32,5 @@ public class User {
 
     public String getRole() { return role; } // 🔥 ADD THIS
     public void setRole(String role) { this.role = role; }
+
 }
