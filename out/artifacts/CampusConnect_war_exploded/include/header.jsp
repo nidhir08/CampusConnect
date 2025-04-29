@@ -173,8 +173,8 @@
       </li>
       <% } else { %>
       <li class="login-register">
-        <a href="${pageContext.request.contextPath}/login" class="login-btn">Login</a>
-        <a href="${pageContext.request.contextPath}/register" class="register-btn">Register</a>
+<%--        <a href="${pageContext.request.contextPath}/login" class="login-btn">Login</a>--%>
+<%--        <a href="${pageContext.request.contextPath}/register" class="register-btn">Register</a>--%>
       </li>
       <% } %>
     </ul>

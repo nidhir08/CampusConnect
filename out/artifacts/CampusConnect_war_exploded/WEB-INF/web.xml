@@ -21,6 +21,15 @@
   </servlet-mapping>
 
   <servlet>
+    <servlet-name>LogoutServlet</servlet-name>
+    <servlet-class>com.CampusConnect.controller.LogoutServlet</servlet-class>
+  </servlet>
+  <servlet-mapping>
+    <servlet-name>LogoutServlet</servlet-name>
+    <url-pattern>/logout</url-pattern>
+  </servlet-mapping>
+
+  <servlet>
     <servlet-name>SocietyServlet</servlet-name>
     <servlet-class>com.CampusConnect.controller.SocietyServlet</servlet-class>
   </servlet>
