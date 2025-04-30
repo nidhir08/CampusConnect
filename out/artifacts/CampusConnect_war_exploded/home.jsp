@@ -3,6 +3,7 @@
 <%@ page import="com.CampusConnect.model.Event" %>
 <%@ page import="java.util.List" %>
 <%@ page import="java.text.SimpleDateFormat" %>
+<%@ page import="com.CampusConnect.model.Society" %>
 
 
 <!DOCTYPE html>
@@ -187,41 +188,35 @@
 
     <section class="featured-section">
       <h2>Featured Societies</h2>
-
       <div class="societies-grid">
-        <!-- This would be populated from the database -->
+        <%
+          List<Society> societies = (List<Society>) request.getAttribute("societies");
+          if (societies != null && !societies.isEmpty()) {
+            for (Society society : societies) {
+        %>
         <div class="society-card">
-          <div class="society-logo">
-            <img src="images/programming-club.jpg" alt="Programming Club">
-          </div>
-          <h3>Programming Club</h3>
-          <p>A club for programming enthusiasts to learn, collaborate, and build projects together.</p>
-          <a href="societies?action=view&id=1" class="btn btn-small">View Details</a>
+<%--          <div class="society-logo">--%>
+<%--            <img src="images/<%= society.getImage() != null ? society.getImage() : "default.jpg" %>" alt="<%= society.getName() %>">--%>
+<%--          </div>--%>
+          <h3><%= society.getName() %></h3>
+          <p><%= society.getDescription() %></p>
+          <a href="societies?action=view&id=<%= society.getSoId() %>" class="btn btn-small">View Details</a>
         </div>
-
-        <div class="society-card">
-          <div class="society-logo">
-            <img src="images/drama-society.jpg" alt="Drama Society">
-          </div>
-          <h3>Drama Society</h3>
-          <p>For students interested in theater, acting, and performance arts.</p>
-          <a href="societies?action=view&id=2" class="btn btn-small">View Details</a>
-        </div>
-
-        <div class="society-card">
-          <div class="society-logo">
-            <img src="images/debate-club.jpg" alt="Debate Club">
-          </div>
-          <h3>Debate Club</h3>
-          <p>Improve your public speaking and debating skills with like-minded peers.</p>
-          <a href="societies?action=view&id=3" class="btn btn-small">View Details</a>
-        </div>
+        <%
+          }
+        } else {
+        %>
+        <p>No societies available at the moment.</p>
+        <%
+          }
+        %>
       </div>
 
       <div class="view-all">
         <a href="societies" class="btn btn-primary">View All Societies</a>
       </div>
     </section>
+
   </main>
 
 </div>

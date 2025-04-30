@@ -40,6 +40,16 @@
   </servlet-mapping>
 
   <servlet>
+    <servlet-name>AddSocietyServlet</servlet-name>
+    <servlet-class>com.CampusConnect.controller.admin.AddSocietyServlet</servlet-class>
+  </servlet>
+
+  <servlet-mapping>
+    <servlet-name>AddSocietyServlet</servlet-name>
+    <url-pattern>/AddSocietyServlet</url-pattern>
+  </servlet-mapping>
+
+  <servlet>
     <servlet-name>RegisterServlet</servlet-name>
     <servlet-class>com.CampusConnect.controller.RegisterServlet</servlet-class>
   </servlet>
@@ -58,6 +68,38 @@
     <servlet-name>EventServlet</servlet-name>
     <url-pattern>/events</url-pattern>
   </servlet-mapping>
+
+  <servlet>
+    <servlet-name>AddEventServlet</servlet-name>
+    <servlet-class>com.CampusConnect.controller.admin.AddEventServlet</servlet-class>
+  </servlet>
+
+  <servlet-mapping>
+    <servlet-name>AddEventServlet</servlet-name>
+    <url-pattern>/AddEventServlet</url-pattern>
+  </servlet-mapping>
+
+  <servlet>
+    <servlet-name>EditEventServlet</servlet-name>
+    <servlet-class>com.CampusConnect.controller.admin.EditEventServlet</servlet-class>
+  </servlet>
+
+  <servlet-mapping>
+    <servlet-name>EditEventServlet</servlet-name>
+    <url-pattern>/EditEventServlet</url-pattern>
+  </servlet-mapping>
+
+  <servlet>
+    <servlet-name>AdminLoginServlet</servlet-name>
+    <servlet-class>com.CampusConnect.controller.admin.AdminLoginServlet</servlet-class>
+  </servlet>
+
+  <servlet-mapping>
+    <servlet-name>AdminLoginServlet</servlet-name>
+    <url-pattern>/admin/AdminLoginServlet</url-pattern>
+  </servlet-mapping>
+
+
 
   <servlet>
     <servlet-name>SocietyDetailsServlet</servlet-name>
@@ -90,7 +132,7 @@
     <session-timeout>30</session-timeout>
   </session-config>
 
-  <!-- Security Constraints -->
+<!--   Security Constraints -->
 <!--  <security-constraint>-->
 <!--    <web-resource-collection>-->
 <!--      <web-resource-name>Admin Area</web-resource-name>-->
@@ -101,7 +143,7 @@
 <!--    </auth-constraint>-->
 <!--  </security-constraint>-->
 
-  <!-- Security Roles -->
+<!--&lt;!&ndash;   Security Roles &ndash;&gt;-->
 <!--  <security-role>-->
 <!--    <role-name>ADMIN</role-name>-->
 <!--  </security-role>-->

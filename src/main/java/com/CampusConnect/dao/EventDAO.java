@@ -149,12 +149,14 @@ public class EventDAO {
     public static boolean insertEvent(Event event) {
         boolean inserted = false;
         try (Connection conn = DBConnection.getConnection()) {
-            String sql = "INSERT INTO events (title, description, event_date, society_id) VALUES (?, ?, ?, ?)";
+            String sql = "INSERT INTO events (title, description, event_date, location, society_id) VALUES (?, ?, ?, ?, ?)";
             PreparedStatement ps = conn.prepareStatement(sql);
             ps.setString(1, event.getTitle());
             ps.setString(2, event.getDescription());
             ps.setDate(3, new java.sql.Date(event.getEventDate().getTime()));
-            ps.setInt(4, event.getSocietyId());
+            ps.setString(4, event.getLocation()); // Add this
+            ps.setInt(5, event.getSocietyId());
+
 
             int rows = ps.executeUpdate();
             inserted = rows > 0;

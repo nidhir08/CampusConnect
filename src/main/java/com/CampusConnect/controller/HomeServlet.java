@@ -28,7 +28,6 @@ protected void doGet(HttpServletRequest request, HttpServletResponse response)
         throws ServletException, IOException {
 
     List<Event> upcomingEvents = eventDAO.getAllEventsWithSocietyNames();
-
     List<Society> societies = societyDAO.getAllSocieties();
 
     System.out.println("Fetched events: " + upcomingEvents.size());
